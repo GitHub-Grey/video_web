@@ -1,18 +1,14 @@
 import style from "@/assets/styles/pc/nav.module.scss"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PlayCircleFilled } from '@ant-design/icons';
+import data from "./data"
 const Header = () => {
-    const [list, setList] = useState([
-        { name: "视频中", icon: "" },
-        { name: "动作", icon: "" },
-        { name: "动作", icon: "" },
-        { name: "动作", icon: "" },
-        { name: "动作", icon: "" },
-        { name: "动作", icon: "" },
-        { name: "动作", icon: "" },
+    type Item = {
+        id: number|string;
+        name: string;
+      };
 
-    ])
-
+    const [list, setList] = useState<Item[]>([])
     const [routerActive, setRouterActive] = useState(0)
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
@@ -23,6 +19,17 @@ const Header = () => {
     const handleMouseLeave = () => {
         setHoveredItemId(null);
     };
+
+    const getMenu = () => {
+        const newMemu = data.map(item => {
+            return { name:item.params.channel_name,id:item.params.channel_id  }
+        })
+        setList([...newMemu])
+    }
+
+    useEffect(() => {
+        getMenu()
+    },[])
 
     return (
         <div className={style.leftNavWrap}>
