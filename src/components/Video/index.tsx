@@ -1,14 +1,18 @@
 import style from "@/assets/styles/h5/video.module.scss";
 import { useEffect, useMemo, useState, useRef } from "react";
 import Player, { Events } from "xgplayer";
+import classNames from "classnames";
+import { tree } from "../../../node_modules/next/dist/build/templates/app-page";
 interface Props {
   poster: string;
-  src: string;
+  src?: string;
+  isMute?: boolean;
   videoId: string | number;
-  goLink: () => void;
+  goLink?: () => void;
+  className?: any;
 }
 const AppVideo = (props: Props) => {
-  const { poster, goLink } = props;
+  const { poster, goLink, className, isMute = true } = props;
   const [player, setPlayer] = useState<any>();
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -16,9 +20,13 @@ const AppVideo = (props: Props) => {
 
   const playVideo = () => {
     if (player) {
-      player.muted = true;
+      player.muted = isMute;
       player.play();
-      setIsPlaying(true);
+    }
+  };
+  const pauseVideo = () => {
+    if (player) {
+      player.pause();
     }
   };
 
@@ -34,12 +42,23 @@ const AppVideo = (props: Props) => {
         poster: poster,
         autoplay: false,
       });
-      p.on(Events.PlAY, () => {
-        console.log(`3333`);
+      p.muted = isMute;
+      p.on(Events.PLAY, () => {
+        setIsPlaying(true);
+      });
+      p.on(Events.PAUSE, () => {
+        setIsPlaying(false);
       });
       setPlayer(p);
     }
   }, [elementRef, poster]);
+
+  useEffect(() => {
+    if (player) {
+      console.log(`调整声音`);
+      player.muted = isMute;
+    }
+  }, [isMute, player]);
 
   useEffect(() => {
     const playHandler = () => {
@@ -47,8 +66,7 @@ const AppVideo = (props: Props) => {
     };
 
     if (player) {
-      console.log(`11111`);
-      player.on(Events.PlAY, () => {
+      player.on(Events.PLAY, () => {
         console.log(`22222`);
       });
       return () => {
@@ -60,13 +78,15 @@ const AppVideo = (props: Props) => {
   return (
     <div
       onClick={() => {
-        if (isPlaying) {
-          goLink();
+        if (isPlaying && goLink) {
+          goLink?.();
+        } else if (isPlaying) {
+          pauseVideo();
         } else {
           playVideo();
         }
       }}
-      className={style.video}
+      className={classNames(style.video, className)}
     >
       <div ref={elementRef}></div>
       {/* <video
