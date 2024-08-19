@@ -1,4 +1,4 @@
-.navWrap {
+.leftNavWrap {
     width: 180px;
     height: 100vh;
     position: fixed;
@@ -6,8 +6,90 @@
     left: 0;
     top: 0px;
     background-image: linear-gradient(-90deg, rgba(20, 20, 20, 0) 1%, rgba(20, 20, 20, .6) 99%);
+    direction: rtl;
+    .navWrap {
+        // background-color: aqua;
+        height: calc(100vh - 84px);
+        overscroll-behavior: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-color: rgba(255, 255, 255, .4) transparent;
+        scrollbar-width: thin;
+        -ms-overflow-style: none;
+        user-select: none;
+
+        .navItemWrap {
+            display: flex;
+            align-items: center;
+            width: 160px;
+            height: 48px;
+            border-radius: 9px;
+            margin-right: 20px;
+            font-family: PingFangSC-Regular;
+            font-size: 16px;
+            letter-spacing: 0;
+            line-height: 32px;
+            text-decoration: none;
+            cursor: pointer;
+            color: #ffffff99;
+            justify-content: flex-end;
+
+            .icon {
+                margin-left: 42px;
+                opacity: .6;
+                position: relative;
+                flex-shrink: 0;
+                .icons{
+                    font-size: 20px;
+                    color: #ffffff99;
+                }
+            }
+
+            .text {
+                position: relative;
+                margin-left: 15px;
+                color: #ffffff99;
+                white-space: nowrap;
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+            }
+            &.active{
+                .text{
+                    color: #fff;
+                }
+                .icons{
+                    path{
+                        fill:#fff;
+                    }
+                }
+            }
+
+            &.routerActive {
+                
+                .text{
+                    color: #00d1d1 !important;
+                }
+                .icons{
+                    path{
+                        fill:#00d1d1 !important;
+                    }
+                }
+
+                // .activeIcon {
+                //     display: block;
+                // }
+
+                // .icon {
+                //     display: none;
+                // }
+            }
+
+        }
+    }
 
 }
+
 .logo {
     width: 180px;
     height: 84px;
