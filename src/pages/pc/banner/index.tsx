@@ -4,7 +4,6 @@
  const Banner = () => {
     return (
         <div className={style.banner}>
-            轮播图123
            <img className={style.bannerImg} src="/imgs/0.webp" alt="me" />
         </div>
     );
